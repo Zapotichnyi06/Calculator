@@ -1,0 +1,131 @@
+html{
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(to bottom right, #000000, #206e00);
+  background-color: #000000;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+body{
+  display: flex;
+  height: 95vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.background{
+  justify-content: center;
+  align-items: center;
+  /*background-color: darkseagreen;*/
+  width: 350px;
+  height: 500px;
+  border: lightgrey solid 5px;
+  border-radius: 10px;
+  /*box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.75)*/
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-gap: 10px;
+  padding: 5px;
+}
+
+.grid-item {
+  text-align: center; /* Выравнивание текста по центру */
+  background-color: #007bff; /* Цвет фона кнопок */
+  color: #ffffff; /* Цвет текста на кнопках */
+  border: none; /* Убрать границу кнопок */
+  cursor: pointer; /* Изменение курсора при наведении на кнопки */
+
+  font-weight: bold;
+  font-size: x-large;
+  height: 50px;
+  width: 100%;
+}
+
+/*radius*/
+.point {
+  border-radius: 0 0 0 5px;
+}
+.equal{
+  border-radius: 0 0 5px 0;
+}
+
+/*size*/
+.wide{
+  grid-column: span 2;
+}
+.wid{
+  height: 220%;
+}
+.ac-5{
+  order: -5;
+}
+.ac-4{
+  order: -4;
+}
+.ac-3{
+  order: -3;
+}
+.ac-2{
+  order: -2;
+}
+.ac-1{
+  order: -1;
+}
+.ac2{
+  order: 1;
+}
+
+/*color-button*/
+.color-ari{
+  background-color: darkslategray;
+}
+.color-rul{
+  background-color: #989898;
+  color: black;
+}
+.color-num{
+  background-color: #505050;
+}
+.color-num:hover {
+  animation: changeColor 0.5s ease-in-out alternate;
+}
+
+@keyframes changeColor {
+  0% {
+    background-color: #505050;
+  }
+  50% {
+    background-color: #b9b9b9;
+  }
+  100% {
+    background-color: #505050;
+  }
+}
+
+.color-ari:hover{
+  background-color: #518c8c;
+}
+
+/*total*/
+.total-fon{
+  width: inherit;
+  height: 80px;
+  background-color: black;
+  border-radius: 5px 5px 0 0;
+  color: whitesmoke;
+}
+.total{
+  display: flex;
+  justify-content: end;
+  padding: 20px 10px 0 0;
+  font-size: 30px;
+  font-family: "Apple Braille";
+  overflow: auto;
+}
