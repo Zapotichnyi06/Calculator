@@ -5,97 +5,95 @@ class Body extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            total: "0",
-            total2: "0",
-            arithmetic: "",
-            equals: "",
-            error: ""
+            current: "0",
+            previous: null,
+            operation: null,
+            lastNumber: null,
+            error: false,
+            newCalculation: true
         };
     }
 
-    updateTotal = (num) => {
-        if(this.state.equals !== ""){this.setState({total: "0", total2: "0", arithmetic: "", equals: "", error: ""});}
-        if (this.state.total !== "0" && (num === '-' || num === '+' || num === '/' || num === '*' || num === '%')) {
-            this.setState({arithmetic: String(num)});
-        } else if (num === 'AC') {
-            this.setState({total: "0", total2: "0", arithmetic: "", equals: "", error: ""});
-        } else if (num === '+/-') {
-            if (parseFloat(this.state.total) !== 0) {
-                this.setState((prevState) => ({total: String(-parseFloat(prevState.total))}));
-            } else if (parseFloat(this.state.total2) !== 0) {
-                this.setState((prevState) => ({total2: String(-parseFloat(prevState.total2))}));
+    updateTotal = (input) => {
+        let { current, previous, operation, lastNumber, error, newCalculation } = this.state;
+
+        // Сбросить все
+        if (input === 'AC') {
+            this.setState({ current: "0", previous: null, operation: null, lastNumber: null, error: false, newCalculation: true });
+            return;
+        }
+
+        // Обработка ввода после получения результата
+        if (newCalculation && !error) {
+            if (!isNaN(input)) {
+                // Начать новое вычисление с введенного числа
+                this.setState({ current: input, previous: null, operation: null, lastNumber: null, newCalculation: false });
+                return;
+            } else if (['+', '-', '*', '/', '%'].includes(input)) {
+                // Начать новое вычисление с текущего результата и новой операции
+                this.setState({ operation: input, previous: current, lastNumber: null, newCalculation: false });
+                return;
             }
-        } else if (num === '=' && this.state.total !== "0" && this.state.total2 !== "0") {
-            this.calculateResult();
-        } else if (num === '.') {
-            if (!this.state.total.includes('.') && this.state.total2 === "0") {
-                this.setState((prevState) => ({total: prevState.total + num}));
-            } else if (!this.state.total2.includes('.')) {
-                this.setState((prevState) => ({total2: prevState.total2 + num}));
-            }
-        } else {
-            if (this.state.arithmetic !== "") {
-                if (this.state.total2 === "0" && (num !== "." && num !== "=" && num !== '-' && num !== '+' && num !== '/' && num !== '*' && num !== '%')) {
-                    this.setState({total2: num});
-                } else {
-                    if(num !== "." && num !== "=" && num !== '-' && num !== '+' && num !== '/' && num !== '*' && num !== '%') {
-                        this.setState((prevState) => ({total2: prevState.total2 + num}));
-                    }
-                }
-            } else {
-                if (this.state.total === "0" && (num !== "." && num !== "=" && num !== '-' && num !== '+' && num !== '/' && num !== '*' && num !== '%')) {
-                    this.setState({total: num});
-                } else {
-                    if(num !== "." && num !== "=" && num !== '-' && num !== '+' && num !== '/' && num !== '*' && num !== '%') {
-                        this.setState((prevState) => ({total: prevState.total + num}));
-                    }
-                }
+        }
+
+        // Обработка операций
+        if (['+', '-', '*', '/', '%'].includes(input)) {
+            this.setState({
+                operation: input,
+                previous: current,
+                current: "0",
+                lastNumber: previous !== null ? parseFloat(current) : null
+            });
+            return;
+        }
+
+        // Добавление десятичной точки
+        if (input === '.' && !current.includes('.')) {
+            this.setState({ current: current + '.' });
+            return;
+        }
+
+        // Добавление цифр
+        if (input !== "." && input !== "=") {
+            this.setState({ current: current === "0" ? input : current + input });
+        }
+
+        // Вычисление результата
+        if (input === '=') {
+            if (previous !== null && operation) {
+                const num = lastNumber !== null ? lastNumber : parseFloat(current);
+                const result = this.calculateResult(parseFloat(previous), num, operation);
+                this.setState({ current: String(result), previous: null, lastNumber: num, error: false, newCalculation: true });
+            } else if (previous === null && lastNumber !== null) {
+                const result = this.calculateResult(parseFloat(current), lastNumber, operation);
+                this.setState({ current: String(result), previous: null, error: false, newCalculation: true });
             }
         }
     };
 
-    calculateResult = () => {
-        let result;
-        const num1 = parseFloat(this.state.total);
-        const num2 = parseFloat(this.state.total2);
-        switch (this.state.arithmetic) {
-            case '+':
-                result = num1 + num2;
-                break;
-            case '-':
-                result = num1 - num2;
-                break;
-            case '*':
-                result = num1 * num2;
-                break;
-            case '/':
-                if (num2 !== 0) {
-                    result = num1 / num2;
-                } else {
-                    this.setState({ error: "Невозможно делить на ноль" });
-                    return;
-                }
-                break;
-            case '%':
-                result = num1 % num2;
-                break;
-            default:
-                return;
+    calculateResult = (num1, num2, operation) => {
+        switch (operation) {
+            case '+': return num1 + num2;
+            case '-': return num1 - num2;
+            case '*': return num1 * num2;
+            case '/': return num2 !== 0 ? num1 / num2 : "Error";
+            case '%': return num1 % num2;
+            default: return "Error";
         }
-        this.setState({ total: "0", total2: "0", equals: String(result), arithmetic: "", error: "" });
     };
 
     render() {
+        const { current, error } = this.state;
+
         return (
             <div className="back">
                 <div className="background">
-                    <div>{this.state.error}</div>
                     <div className="total-fon">
                         <div className="total">
-                            {(this.state.arithmetic !== "") ? this.state.total2 !== '0' ? this.state.total2 : this.state.total : ((this.state.equals === "") ? this.state.total : this.state.equals)}
+                            {error ? "Ошибка: Деление на ноль" : current}
                         </div>
                     </div>
-                    <Button total={this.state.total} update={this.updateTotal}/>
+                    <Button update={this.updateTotal} />
                 </div>
             </div>
         );
