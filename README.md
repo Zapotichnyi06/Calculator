@@ -1,21 +1,39 @@
 # Calculator
 
-Calculator - универсальный калькулятор с гибкими функциями для всех ваших вычислительных потребностей.
+Calculator is a versatile calculator with flexible functions for all your computational needs.
 
-## Описание
+## Description
 
-Calculator представляет собой простой в использовании, но мощный инструмент для выполнения арифметических операций, конвертации валют, вычисления процентов и многое другое. Это позволяет легко и быстро решать математические задачи в любой ситуации.
+Calculator is a simple yet powerful tool for performing arithmetic operations, currency conversion, percentage calculations, and more. It allows you to solve mathematical problems easily and quickly in any situation.
 
-## Функциональности
+## Features
 
-- Простой интерфейс для выполнения базовых арифметических операций: сложение, вычитание, умножение и деление.
-- Возможность вычисления процентов, конвертации валюты и других математических функций.
-- Гибкость в настройке параметров и предоставление результатов в удобном формате.
+- Simple interface for basic arithmetic operations: addition, subtraction, multiplication, and division.
+- Ability to calculate percentages, convert currency, and other mathematical functions.
+- Flexibility in setting parameters and providing results in a convenient format.
 
-## Вклад в проект
+## Installation
 
-Если у вас есть предложения по улучшению калькулятора Calculator, пожалуйста, не стесняйтесь вносить свой вклад. Вы можете создать issue или отправить pull request на GitHub репозиторий проекта.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Zapotichnyi06/Calculator.git
+   cd Calculator
+   ```
+   
+2.	Install dependencies:
+```bash
+   npm install
+   ```
 
-## Лицензия
+3.	Run the application:
+```bash
+   npm run start
+   ```
 
-Этот проект лицензирован по [MIT License](LICENSE).
+## Contributing
+
+If you have suggestions for improving the Calculator, please feel free to contribute. You can create an issue or submit a pull request to the project’s GitHub repository.
+
+## License
+
+This project is licensed under the MIT License.
